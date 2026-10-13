@@ -16,7 +16,7 @@ The [Copilot CLI integration](https://docs.github.com/en/copilot/how-tos/copilot
 
 - 🔐 **Simple Permissions**: The `copilot-requests: write` permission allows the workflow to make Copilot requests.
 
-- 🎯 **Easy Integration**: The official [actions/ai-inference](https://github.com/actions/ai-inference) action wraps Copilot CLI to generate a response.
+- 🎯 **Easy Integration**: Install Copilot CLI with npm, then run it in non-interactive mode to generate a response.
 
 > [!TIP]
 >
@@ -51,7 +51,7 @@ Let's create a simple workflow that we can trigger manually from the GitHub UI.
 
    > ❗ **Caution:** Copy the contents as provided, as this exact workflow name (`Ask AI`) is required to progress to next steps of this exercise.
 
-1. Now we'll add a job that uses the AI inference action.
+1. Now we'll add a job that uses Copilot CLI.
 
    In this simple scenario, we'll ask the AI a simple hardcoded question and display the response in the workflow summary:
 
@@ -66,21 +66,13 @@ Let's create a simple workflow that we can trigger manually from the GitHub UI.
          - name: Install Copilot CLI
            run: npm install -g @github/copilot
 
-         - name: AI Inference
-           id: ai-response
-           uses: actions/ai-inference@v1
-           with:
-             prompt: |
-               Give me a programming joke.
-             model: gpt-4.1
-           env:
-             COPILOT_GITHUB_TOKEN: {% raw %}${{ github.token }}{% endraw %}
-
-         - name: Display AI Response
+         - name: Generate AI response
            run: |
-             echo "## 🤖 AI Response" >> $GITHUB_STEP_SUMMARY
-             echo "" >> $GITHUB_STEP_SUMMARY
-             echo "{% raw %}${{ steps.ai-response.outputs.response }}{% endraw %}" >> $GITHUB_STEP_SUMMARY
+             echo "## 🤖 AI Response" >> "$GITHUB_STEP_SUMMARY"
+             echo "" >> "$GITHUB_STEP_SUMMARY"
+             copilot -p "Give me a programming joke." -s >> "$GITHUB_STEP_SUMMARY"
+           env:
+             GITHUB_TOKEN: {% raw %}${{ github.token }}{% endraw %}
    ```
 
    Your organization may need to allow Copilot CLI usage billed to the organization in its Copilot policy settings.
@@ -111,8 +103,7 @@ Now let's test the workflow you just created to see AI in action!
 - **Workflow fails to run**: Ensure the workflow is complete and properly yaml formatted, if it's not then:
   - Find the issue in the workflow and commit the changes again to `main` branch
   - Try running the workflow again
-- **No AI response**: Make sure the `id: ai-response` is set on the AI Inference step and referenced correctly in the Display step
+- **No AI response**: Make sure Copilot CLI is installed, `GITHUB_TOKEN` is passed to the step, and the workflow has `copilot-requests: write` permission
 - **Permission errors**: Double-check that the `copilot-requests: write` permission is properly configured in your workflow file
-- **Action not found**: Verify you're using the exact action name: `actions/ai-inference@v1`
 
 </details>

@@ -16,18 +16,10 @@ jobs:
       - name: Install Copilot CLI
         run: npm install -g @github/copilot
 
-      - name: AI Inference
-        id: ai-response
-        uses: actions/ai-inference@v1
-        with:
-          prompt: |
-            Give me a programming joke.
-          model: gpt-4.1
-        env:
-          COPILOT_GITHUB_TOKEN: ${{ github.token }}
-
-      - name: Display AI Response
+      - name: Generate AI response
         run: |
-          echo "## 🤖 AI Response" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "${{ steps.ai-response.outputs.response }}" >> $GITHUB_STEP_SUMMARY
+          echo "## 🤖 AI Response" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          copilot -p "Give me a programming joke." -s >> "$GITHUB_STEP_SUMMARY"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
