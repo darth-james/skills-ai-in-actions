@@ -1,5 +1,4 @@
 name: Ask AI
-
 on:
   workflow_dispatch:
 
