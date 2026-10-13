@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: AI Inference
         id: ai-response
-        uses: actions/ai-inference@v2
+        uses: actions/ai-inference@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
