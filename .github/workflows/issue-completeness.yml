@@ -44,7 +44,7 @@ jobs:
           ---
           EOF
           )
-          response="$(copilot -p "$prompt" -s --no-ask-user --model gpt-4.1)"
+          response="$(copilot -p "$prompt" -s --no-ask-user)"
           delimiter="RESPONSE_$(date +%s%N)_${RANDOM}_${RANDOM}"
           {
             printf 'response<<%s\n' "$delimiter"
