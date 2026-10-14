@@ -43,7 +43,7 @@ jobs:
             ${{ github.event.issue.body }}
             ---
         env:
-          COPILOT_GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Comment results on the issue
         uses: peter-evans/create-or-update-comment@v4
